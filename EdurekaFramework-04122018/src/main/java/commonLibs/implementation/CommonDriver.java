@@ -13,6 +13,10 @@ public class CommonDriver implements Driver {
 
 	private WebDriver driver;
 
+	public WebDriver getDriver() {
+		return driver;
+	}
+
 	private int pageLoadTimeout;
 	private int elementDetectionTimeout;
 
