@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Homepage">
+	<test name="Test">
+	    <groups>
+	        <run>
+	            <include name="Sanity"></include>
+	        </run>
+	    </groups>
+		<parameter name="sUserEmailId" value="saurabh.d2106@gmail.com"></parameter>
+		<parameter name="sUserPassword" value="Pro@1234"></parameter>
+		<classes>
+			<class name="com.mercuryTravel.tests.HomePageTests" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Homepage -->
