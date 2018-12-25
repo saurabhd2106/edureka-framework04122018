@@ -1,5 +1,7 @@
 package com.mercuryTravel.tests;
 
+import java.util.Properties;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -13,13 +15,11 @@ import com.mercuryTravel.pages.HomePage;
 
 import commonLibs.implementation.CommonDriver;
 import commonLibs.implementation.ScreenshotControl;
+import commonLibs.utils.ConfigReader;
 import commonLibs.utils.DateUtils;
 
-public class TestSetup extends ExtentReport {
+public class TestSetup {
 
-	public TestSetup() throws Exception {
-		super();
-	}
 
 	CommonDriver cmnDriver;
 
@@ -28,13 +28,30 @@ public class TestSetup extends ExtentReport {
 
 	private WebDriver driver;
 	public ScreenshotControl screenshotControl;
+	
+	public Properties configProperty;
 
+	public String currentProjectPath;
+	
+	public ExtentReport extentReport;
+
+	public String executionStartTime;
+	
 	@BeforeClass(alwaysRun = true)
 	public void setup() throws Exception {
+		
+		setCurrentDirectoryPath();
+		
+		uploadConfigProperty();
+		
+		executionStartTime = DateUtils.getDate();
+		extentReport = new ExtentReport();
 
-		initializeReport();
+		String reportFileName = String.format("%s/reports/MercuryTravelTest_%s.html", currentProjectPath, executionStartTime);
 
-		test = extent.createTest("Initialize Basic setup");
+		extentReport.initializeReport(reportFileName);
+
+		extentReport.test = extentReport.extent.createTest("Initialize Basic setup");
 
 		cmnDriver = new CommonDriver(configProperty.getProperty("browserType"));
 
@@ -44,7 +61,7 @@ public class TestSetup extends ExtentReport {
 		cmnDriver.setPageLoadTimeout(pageLoadTimeout);
 		cmnDriver.setElementDetectionTimeout(elementDetectionTimeout);
 
-		test.log(Status.INFO, "Navigating to Base Url");
+		extentReport.test.log(Status.INFO, "Navigating to Base Url");
 		cmnDriver.navigateToFirstUrl(configProperty.getProperty("baseUrl"));
 
 		driver = cmnDriver.getDriver();
@@ -62,7 +79,7 @@ public class TestSetup extends ExtentReport {
 	@AfterClass(alwaysRun = true)
 	public void cleanup() throws Exception {
 		cmnDriver.closeAllBrowsers();
-		flushReport();
+		extentReport.flushReport();
 	}
 
 	@AfterMethod(alwaysRun = true)
@@ -70,19 +87,30 @@ public class TestSetup extends ExtentReport {
 
 		if (result.getStatus() == ITestResult.FAILURE) {
 
-			test.fail(result.getName());
+			extentReport.test.fail(result.getName());
 			String executionTime = DateUtils.getDate();
 			String screenshotPath = String.format("%s/screenshots/%s_%s.jpeg", currentProjectPath, result.getName(),
 					executionTime);
 
 			String screenshotFile = screenshotControl.captureAndSaveScreenshot(screenshotPath);
 
-			test.addScreenCaptureFromPath(screenshotFile);
+			extentReport.test.addScreenCaptureFromPath(screenshotFile);
 		} else if (result.getStatus() == ITestResult.SUCCESS) {
-			test.pass(result.getName());
+			extentReport.test.pass(result.getName());
 		} else {
-			test.skip(result.getName());
+			extentReport.test.skip(result.getName());
 		}
+
+	}
+	
+	private void setCurrentDirectoryPath() {
+
+		currentProjectPath = System.getProperty("user.dir");
+	}
+
+	private void uploadConfigProperty() throws Exception {
+
+		configProperty = ConfigReader.getProperties(currentProjectPath + "/config/config.properties");
 
 	}
 

@@ -16,16 +16,16 @@ public class HomePageTests extends TestSetup {
 	@Test
 	public void verifyLoginToApplication(String sUserEmailId, String sUserPassword) throws Exception {
 
-		test = extent.createTest("TC - 121 - Verify Login to Mercury Travel with paramters : "+ sUserEmailId + " "+ sUserPassword);
+		extentReport.test = extentReport.extent.createTest("TC - 121 - Verify Login to Mercury Travel with paramters : "+ sUserEmailId + " "+ sUserPassword);
 		homepage.userLogin(sUserEmailId, sUserPassword);
 
-		String actualWelcomeText = "Welcome, Saurabh 1";
+		String actualWelcomeText = "Welcome, Saurabh";
 
 		String expectedWelcomeText = homepage.getWelcomeText();
 		
 		Assert.assertEquals(actualWelcomeText, expectedWelcomeText);
 
-		test.log(Status.INFO, "Both Actual and Welcome text match");
+		extentReport.test.log(Status.INFO, "Both Actual and Welcome text match");
 	}
 
 }

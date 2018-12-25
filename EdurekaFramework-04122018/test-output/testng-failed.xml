@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [Homepage]">
-  <test thread-count="5" name="Test(failed)">
-    <parameter name="sUserPassword" value="Pro@1234"/>
-    <parameter name="sUserEmailId" value="saurabh.d2106@gmail.com"/>
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
+  <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.mercuryTravel.tests.HomePageTests">
+      <class name="demo.DemoTestDataProvider">
         <methods>
-          <include name="afterAMethod"/>
-          <include name="setup"/>
-          <include name="cleanup"/>
-          <include name="verifyLoginToApplication" invocation-numbers="0"/>
+          <include name="printTestData"/>
         </methods>
-      </class> <!-- com.mercuryTravel.tests.HomePageTests -->
+      </class> <!-- demo.DemoTestDataProvider -->
     </classes>
-  </test> <!-- Test(failed) -->
-</suite> <!-- Failed suite [Homepage] -->
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->
